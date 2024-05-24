@@ -46,6 +46,16 @@ var CryptoJS = CryptoJS || (function (Math, undefined) {
      */
     var cryptoSecureRandomInt = function () {
         if (crypto) {
+
+            if (typeof crypto === 'undefined' || Object.keys(crypto).length === 0) {
+                // If crypto is undefined or an empty object, attempt to require it
+                try {
+                    crypto = require('crypto');
+                } catch (err) {
+                    throw new Error('Native crypto module could not be used to get secure random number.');
+                }
+            }
+            
             // Use getRandomValues method (Browser)
             if (typeof crypto.getRandomValues === 'function') {
                 try {
